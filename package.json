@@ -2,12 +2,7 @@
   "name": "server",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
-  "jest": {
-    "testEnvironment": "node",
-    "setupTestFrameworkScriptFile": "./tests/setup.js",
-    "testURL": "http://localhost/"
-  },
+  "main": "index.js",  
   "scripts": {
     "start": "node index.js",
     "server": "nodemon index.js --ignore tests",
