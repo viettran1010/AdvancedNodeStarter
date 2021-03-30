@@ -23,7 +23,7 @@
     "jest": "^22.1.4",
     "migrate-mongoose": "^4.0.0",
     "mongoose": "^5.11.1",
-    "nodemon": "^1.11.0",
+    "nodemon": "^2.0.0",
     "passport": "^0.3.2",
     "passport-google-oauth20": "^2.0.0",
     "path-parser": "^2.0.2",
