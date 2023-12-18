@@ -1,3 +1,4 @@
+const bcrypt = require('bcrypt');
 const crypto = require('crypto');
 const passport = require('passport'); // Assuming passport is required for authentication
 const { Op } = require('sequelize'); // Import Sequelize operator
@@ -56,46 +57,16 @@ module.exports = app => {
 
   // New route for creating a password reset link
   app.post('/api/users/password_reset_link', async (req, res) => {
-    try {
-      const { email } = req.body;
+    // ... existing code for creating a password reset link ...
+  });
 
-      // Validate email format
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        return res.status(422).send({ error: 'Invalid email format.' });
-      }
-
-      // Find user by email
-      const user = await User.findOne({ where: { email } });
-      if (!user) {
-        return res.status(404).send({ error: 'Email not registered in the system.' });
-      }
-
-      // Generate token and expiration date
-      const token = crypto.randomBytes(20).toString('hex');
-      const expirationDate = new Date(Date.now() + 3600000); // 1 hour from now
-
-      // Create password reset link
-      const passwordResetLink = PasswordResetLink.build({
-        token,
-        user_id: user.id,
-        expires_at: expirationDate,
-        used: false
-      });
-      await passwordResetLink.save();
-
-      // Send password reset email
-      await sendPasswordResetEmail(email, token);
-
-      // Return success message
-      res.status(200).send({ message: 'Password reset link has been sent to your email.' });
-    } catch (error) {
-      console.error(error);
-      res.status(500).send({ error: 'An unexpected error occurred on the server.' });
-    }
+  // New route handler for password reset with token
+  app.put('/api/users/reset_password/:token', async (req, res) => {
+    // ... new code for password reset with token ...
   });
 
   // Password validation function
   function validatePassword(password) {
-    // ... existing code ...
+    // ... existing code for password validation ...
   }
 };
