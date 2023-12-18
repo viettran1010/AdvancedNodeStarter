@@ -1,9 +1,11 @@
 const bcrypt = require('bcrypt');
+const crypto = require('crypto');
 const { Op } = require('sequelize'); // Import Sequelize operator
 const passport = require('passport'); // Assuming passport is required for authentication
+const { sendPasswordResetEmail } = require('../services/mailingService'); // Assuming there's a mailing service
 
 // Assuming models are exported from a central file
-const { PasswordResetLink, User } = require('../models');
+const { User, PasswordResetLink } = require('../models');
 
 module.exports = app => {
   app.get(
@@ -30,7 +32,35 @@ module.exports = app => {
     res.send(req.user);
   });
 
-  // New route for password reset
+  // New password reset request route
+  app.post('/auth/forgot_password', async (req, res) => {
+    const { email } = req.body;
+    try {
+      const user = await User.findOne({ email });
+      if (!user) {
+        return res.status(404).send('User not found.');
+      }
+
+      const token = crypto.randomBytes(20).toString('hex'); // Secure token generation
+      const expirationDate = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours from now
+
+      const passwordResetLink = new PasswordResetLink({
+        token,
+        user_id: user.id,
+        expires_at: expirationDate
+      });
+      await passwordResetLink.save();
+
+      await sendPasswordResetEmail(user.email, token);
+
+      res.send('Password reset link has been sent.');
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('An error occurred while processing your request.');
+    }
+  });
+
+  // New route for password reset confirmation
   app.post('/auth/reset_password', async (req, res) => {
     try {
       const { token, password } = req.body;
