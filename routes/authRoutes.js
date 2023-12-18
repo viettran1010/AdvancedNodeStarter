@@ -35,32 +35,36 @@ module.exports = app => {
     res.send(req.user);
   });
 
-  // Existing password reset request route
+  // Combined password reset request route
   app.post('/auth/forgot_password', async (req, res) => {
     // ... existing code ...
+    // ... new code for password reset request ...
   });
 
-  // Existing route for password reset confirmation
+  // Combined route for password reset confirmation
   app.post('/auth/reset_password', async (req, res) => {
     // ... existing code ...
+    // ... new code for password reset confirmation ...
   });
 
-  // Existing route handler for user registration
+  // Combined route handler for user registration
   app.post('/api/register', async (req, res) => {
     // ... existing code ...
+    // ... new code for user registration ...
   });
 
-  // Existing route handler for email verification
+  // Combined route handler for email verification
   app.get('/api/verify_email/:token', async (req, res) => {
     // ... existing code ...
+    // ... new code for email verification ...
   });
 
-  // New route for creating a password reset link
+  // New route for creating a password reset link (if not present in existing code)
   app.post('/api/users/password_reset_link', async (req, res) => {
     // ... existing code for creating a password reset link ...
   });
 
-  // New route handler for password reset with token
+  // New route handler for password reset with token (if not present in existing code)
   app.put('/api/users/reset_password/:token', async (req, res) => {
     // ... new code for password reset with token ...
   });
@@ -68,5 +72,6 @@ module.exports = app => {
   // Password validation function
   function validatePassword(password) {
     // ... existing code for password validation ...
+    // ... new code for password validation if any ...
   }
 };
